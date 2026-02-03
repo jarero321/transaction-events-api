@@ -110,12 +110,30 @@ src/
 git clone https://github.com/your-username/transaction-events-api.git
 cd transaction-events-api
 
+# Copy environment file
+cp .env.example .env
+
 # Start all services
-docker-compose up -d
+make up
+# or: docker-compose up -d
 
 # Check service health
 curl http://localhost:8080/health
 ```
+
+### Make Commands
+
+| Command | Description |
+|---------|-------------|
+| `make up` | Start all services |
+| `make down` | Stop all services |
+| `make dev` | Start only infrastructure (postgres, kafka, zookeeper) |
+| `make logs s=api` | View logs for a service |
+| `make clean` | Remove containers, volumes, and images |
+| `make ps` | Show running containers |
+| `make shell` | Open shell in API container |
+| `make test` | Run tests |
+| `make lint` | Run linter |
 
 ### Local Development
 
@@ -124,7 +142,7 @@ curl http://localhost:8080/health
 npm install
 
 # Start infrastructure only
-docker-compose up -d postgres kafka zookeeper
+make dev
 
 # Run in development mode
 npm run start:dev
@@ -289,6 +307,12 @@ try {
 | `npm run start:prod` | Start from dist/ |
 | `npm run lint` | Run ESLint |
 | `npm run test` | Run tests |
+
+## Architecture Decision Records
+
+See [docs/adr](./docs/adr) for architectural decisions:
+
+- [ADR-001: Hexagonal Architecture with Event-Driven Design](./docs/adr/001-hexagonal-event-driven-architecture.md)
 
 ## License
 
