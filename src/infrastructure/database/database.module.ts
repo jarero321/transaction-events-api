@@ -11,12 +11,10 @@ import {
   TypeOrmOutboxRepository,
   TypeOrmIdempotencyService,
 } from './repositories';
-import { TypeOrmUnitOfWork } from './unit-of-work';
 import { OutboxWorker } from './workers';
 import { TRANSACTION_REPOSITORY } from '../../application/ports/transaction-repository.port';
-import { UNIT_OF_WORK } from '../../application/ports/unit-of-work.port';
-import { OUTBOX_REPOSITORY } from '../../application/ports/outbox.port';
 import { IDEMPOTENCY_SERVICE } from '../../application/ports/idempotency.port';
+import { OUTBOX_REPOSITORY } from './ports';
 import { KafkaModule } from '../kafka/kafka.module';
 
 @Module({
@@ -51,11 +49,6 @@ import { KafkaModule } from '../kafka/kafka.module';
       provide: TRANSACTION_REPOSITORY,
       useExisting: TypeOrmTransactionRepository,
     },
-    TypeOrmUnitOfWork,
-    {
-      provide: UNIT_OF_WORK,
-      useExisting: TypeOrmUnitOfWork,
-    },
     TypeOrmOutboxRepository,
     {
       provide: OUTBOX_REPOSITORY,
@@ -68,11 +61,6 @@ import { KafkaModule } from '../kafka/kafka.module';
     },
     OutboxWorker,
   ],
-  exports: [
-    TRANSACTION_REPOSITORY,
-    UNIT_OF_WORK,
-    OUTBOX_REPOSITORY,
-    IDEMPOTENCY_SERVICE,
-  ],
+  exports: [TRANSACTION_REPOSITORY, IDEMPOTENCY_SERVICE],
 })
 export class DatabaseModule {}

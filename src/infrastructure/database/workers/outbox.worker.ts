@@ -1,10 +1,6 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { Inject } from '@nestjs/common';
-import {
-  OUTBOX_REPOSITORY,
-  OutboxRepository,
-} from '../../../application/ports/outbox.port';
-import { LOGGER_PORT, LoggerPort } from '../../../application/ports/logger.port';
+import { Injectable, OnModuleInit, OnModuleDestroy, Inject } from '@nestjs/common';
+import { OUTBOX_REPOSITORY, OutboxRepository } from '../ports';
+import { LOGGER_PORT, LoggerPort } from '../../../application/ports';
 import { KafkaProducerService } from '../../kafka/kafka-producer.service';
 
 const POLL_INTERVAL_MS = 1000;
@@ -53,7 +49,7 @@ export class OutboxWorker implements OnModuleInit, OnModuleDestroy {
     try {
       await this.processEvents();
     } catch (error) {
-      this.logger.error('Outbox worker error', { error });
+      this.logger.error('Outbox worker error', error instanceof Error ? error : undefined);
     }
 
     this.pollTimeout = setTimeout(() => this.poll(), POLL_INTERVAL_MS);
@@ -89,9 +85,8 @@ export class OutboxWorker implements OnModuleInit, OnModuleDestroy {
           error instanceof Error ? error.message : 'Unknown error';
         await this.outboxRepository.markAsFailed(event.eventId, errorMessage);
 
-        this.logger.error('Failed to publish outbox event', {
+        this.logger.error('Failed to publish outbox event', error instanceof Error ? error : undefined, {
           eventId: event.eventId,
-          error: errorMessage,
         });
       }
     }
