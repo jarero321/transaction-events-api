@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Inject } from '@nestjs/common';
 import { Kafka, Producer, Partitioners } from 'kafkajs';
 import { TransactionEvent } from '../../domain/entities';
-import { EventPublisherPort } from '../../application/ports/event-publisher.port';
-import { LOGGER_PORT, LoggerPort } from '../../application/ports/logger.port';
+import { EventPublisherPort } from './ports';
+import { LOGGER_PORT, LoggerPort } from '../../application/ports';
 
 const TRANSACTION_EVENTS_TOPIC = 'transaction-events';
 

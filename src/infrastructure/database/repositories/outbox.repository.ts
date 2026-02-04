@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import {
-  OutboxRepository,
-  OutboxEvent,
-} from '../../../application/ports/outbox.port';
+import { OutboxRepository, OutboxEvent } from '../ports';
 import { OutboxEventOrmEntity, OutboxStatus } from '../entities';
 
 @Injectable()

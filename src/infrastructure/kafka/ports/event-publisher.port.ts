@@ -1,4 +1,4 @@
-import { TransactionEvent } from '../../domain/entities';
+import { TransactionEvent } from '../../../domain/entities';
 
 export const EVENT_PUBLISHER_PORT = Symbol('EVENT_PUBLISHER_PORT');
 
